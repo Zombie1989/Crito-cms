@@ -1,0 +1,55 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+@*
+    This snippet displays a list of links of the pages immediately under the top-most page in the content tree.
+    This is the home page for a standard website.
+    It also highlights the current active page/section in the navigation with the CSS class "current".
+*@
+
+@{ 
+    var site = Model.Root();
+    var selection = Model.Root().Children.Where(x => x.IsVisible(PublishedValueFallback)).ToArray(); 
+
+}
+
+<section class="nav-section">
+    <div class="container">
+        <a href="home.html"><img class="logotype" src="/Images/Logos/logotype.svg" alt=""></a>
+        <nav>
+            <div class="first">
+                <div class="info">
+                    <span><i class="fa-regular fa-phone-volume"></i> +46 (8) 121 470 50</span>
+                    <span><i class="fa-regular fa-envelope-dot"></i> info@crito.com</span>
+                    <span><i class="fa-regular fa-location-dot"></i> Sveavägen 31, 111 34 STOCKHOLM</span>
+                </div>
+                <div class="social-media">
+                    <a href="https://facebook.com"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://twitter.com"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://instagram.com"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://linkedin.com"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="second">
+                <div class="navbar">
+                    <a class="@(Model.Id == site.Id ? "active": null) nav-link" href="@site.Url()">@site.Name</a>
+                    
+                    @if (selection?.Length > 0)
+                    {
+                        @foreach (var item in selection)
+                        {
+                            <a class="@(item.IsAncestorOrSelf(Model) ? "active": null) nav-link" href="@item.Url(PublishedUrlProvider)">@item.Name</a>
+                        }
+                    }
+                    
+                </div>
+                <a class="btn-theme" href="login.html">Login <i class="fa-solid fa-arrow-up-right"></i></a>
+            </div>
+        </nav>
+    </div>
+</section>
