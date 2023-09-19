@@ -1,47 +1,17 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.HomePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 <section class="service-section">
     <div class="container">
         <div class="service">
-            <p class="red-text">Our Services</p>
-            <h1 class="services-title">@Model.Value("servicesTitle")</h1>
+            <p class="red-text">@Model.Value("ourServicesSectionTitle")</p>
+            <h1 class="services-title">@Model.Value("ourServicesSectionHeading")</h1>
             <div class="service-box">
-                <a class="serv-box" href="">
-                    <p class="line"></p>
-                    <h3 class="box-title">Business Advice</h3>
-                    <p class="box-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis in nam possimus.</p>
-                    <div class="button-box">
-                        <p class="box-btn"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>
-                </a>
-                <a class="serv-box" href="">
-                    <p class="line"></p>
-                    <h3 class="box-title">Startup Business</h3>
-                    <p class="box-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis in nam possimus.</p>
-                    <div class="button-box">
-                        <p class="box-btn"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>                        
-                </a>
-                <a class="serv-box" href="">
-                    <p class="line"></p>
-                    <h3 class="box-title">Financial Advice</h3>
-                    <p class="box-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis in nam possimus.</p>
-                    <div class="button-box">
-                        <p class="box-btn"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>                        
-                </a>
-                <a class="serv-box" href="">
-                    <p class="line"></p>
-                    <h3 class="box-title">Risk Management</h3>
-                    <p class="box-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officiis in nam possimus.</p>
-                    <div class="button-box">
-                        <p class="box-btn"><i class="fa-solid fa-arrow-right"></i></p>
-                    </div>                        
-                </a>
+                @Html.GetBlockListHtml(Model.OurServices)
             </div>
             <div class="service-button">
-                <a class="btn-transparent" href="">Browse Services <i class="fa-regular fa-arrow-up-right"></i></a>
+                <a class="btn-transparent" href="@Model.Value("ourServicesSectionButtonUrl")">@Model.Value("ourServicesSectionButtonText") <i class="fa-regular fa-arrow-up-right"></i></a>
             </div>
         </div>
     </div>

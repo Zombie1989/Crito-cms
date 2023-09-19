@@ -10,7 +10,22 @@
 
 
         @await Html.PartialAsync("_BrandSection")
-        @await Html.PartialAsync("_TrustedCompanySection")
+        
+        <!-- Trusted Company START -->
+        <section class="trusted-company">
+            <div class="container">
+                <div class="left">
+                    <p class="red-text">@Model.Value("serviceFeaturesSectionTitle")</p>
+                    <h1 class="title-text">@Model.Value("serviceFeaturesHeading")</h1>
+                    <a class="btn-theme btn" href="@Model.Value("serviceFeaturesButtonUrl")">@Model.Value("serviceFeaturesButton") <i class="fa-solid fa-arrow-up-right"></i></a>
+                </div>
+                <div class="right">
+                    @Html.GetBlockListHtml(Model.ServiceFeatures)
+                </div>
+            </div>
+        </section>
+        <!-- Trusted Company END-->
+        
         @await Html.PartialAsync("_AboutCompany")
         @await Html.PartialAsync("_OurServices")
         @await Html.PartialAsync("_ChooseUsSection")
