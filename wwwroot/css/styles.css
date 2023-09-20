@@ -597,6 +597,30 @@ body {
 .article-section {
   margin-top: 100px;
 }
+.article-section .pagnation {
+  display: flex;
+  justify-content: center;
+}
+.article-section .pagnation .item-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 7%;
+  color: black;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 50px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+.article-section .pagnation .item-link:last-child {
+  margin-right: 0;
+}
+.article-section .pagnation .item-link:hover {
+  background-color: black;
+  color: white;
+}
 .article-section .upper-texts .btn-flex {
   display: flex;
   justify-content: space-between;
