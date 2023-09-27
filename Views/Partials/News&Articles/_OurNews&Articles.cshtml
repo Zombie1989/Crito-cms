@@ -1,6 +1,25 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage;
 @using Umbraco.Cms.Core.Models.PublishedContent;
 
+
+@{
+    var itemsPerPage = 9;
+    var pageNumber = 1;
+
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber))
+        pageNumber = 1;
+
+    var selection = Umbraco?.Content(Guid.Parse("a066a701-8109-4f6a-9c80-f301ac56bd1c"))?
+        .ChildrenOfType("newsItemPage")?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate).ToList();
+
+
+    var totalItems = selection?.Count() ?? 0;
+    var pagedItems = selection?.Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage);
+
+}
+
 <section class="article-section">
     <div class="container">
         <div class="upper-texts">
@@ -14,39 +33,28 @@
             
             
 
-
-            @{
-            	var selection = Umbraco?.Content(Guid.Parse("a066a701-8109-4f6a-9c80-f301ac56bd1c"))?
-                .ChildrenOfType("newsItemPage")?
-                .Where(x => x.IsVisible())
-                .OrderByDescending(x => x.CreateDate).ToList();
-            }
-
-            @if(selection != null)
+            @if (pagedItems != null)
             {
-                @foreach (var item in selection)
+                @foreach (var item in pagedItems!)
                 {
                     var url = item.Url();
                     var date = item.CreateDate;
                     var image = item.Value<IPublishedContent>("newsImage");
-                    var categories = item.Value
+                    var categories = item.Value("newsCategory");
+                    var title = item.Name();
+                    var description = item.Value("newsPreamble");
 
 
-                    <a href="#" class="article-box">
-                        <img src="/src/images/linkedin-sales-solutions-Mis5fyJi7Q0-unsplash.jpg" alt="">
-                        <p class="article-name">Business</p>
-                        <h3 class="article-title">How To Use Digitalization In The Classroom</h3>
+                    <a href="@url" class="article-box">
+                        <img src="@image?.Url()" alt="">
+                        <p class="article-name">@categories</p>
+                        <h3 class="article-title">@title</h3>
                         <p class="article-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto sed hic libero.</p>
                         <div class="date-month">
-                            <h5 class="date">25</h5>
-                            <p class="month">Mar</p>
+                            <h5 class="date">@date.ToString("dd")</h5>
+                            <p class="month">@date.ToString("MMM")</p>
                         </div>
                     </a>
-
-
-                    <li>
-                        <a href="@item.Url()">@item.Name()</a>
-                    </li>
                 }
             }
 
@@ -62,11 +70,31 @@
         </div>
 
         <nav class="pagnation">
-            <a href="#" class="item-link active">1</a>
-            <a href="#" class="item-link">2</a>
-            <a href="#" class="item-link link-next" aria-label="Next">
-                <span aria-hidden="true"><i class="fa-sharp fa-solid fa-chevron-right"></i></span>
-            </a>
+            @if (pageNumber > 1)
+            {
+                <a href="?page=@(pageNumber - 1)" class="item-link link-next" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa-sharp fa-solid fa-chevron-left"></i></span>
+                </a>
+            }
+
+            @for (int i = 1; i <= Math.Ceiling((decimal)totalItems / itemsPerPage); i++ )
+            {
+                if (i == pageNumber)
+                {
+                    <a href="#" class="item-link active">@i</a>
+                }
+                else
+                {
+                    <a href="?page=@i" class="item-link">@i</a>
+                }
+            }
+
+            @if (pageNumber < Math.Ceiling((decimal)totalItems / itemsPerPage))
+            {
+                <a href="?page=@(pageNumber + 1)" class="item-link link-next" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa-sharp fa-solid fa-chevron-right"></i></span>
+                </a>
+            }
         </nav>
         
     </div>

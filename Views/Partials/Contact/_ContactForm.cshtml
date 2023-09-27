@@ -1,32 +1,39 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-
+﻿@using Crito.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    var contactForm = new ContactForm();
+}
 
 <section class="form-section">
     <div class="container">
         <div class="form-title">
             <h1>Leave us a message for any information.</h1>
         </div>
-        <form>
-            <div class="form-text">
-                <input
+
+        @using (Html.BeginUmbracoForm("Index", "Contacts", FormMethod.Post))
+        {
+             <div asp-validation-summary="All"></div>
+
+                <div class="form-text">
+
+                    <input
+                    asp-for="@contactForm.Name"
                     type="text"
-                    placeholder="Name*"
-                    >
-            </div>
-            <div class="form-text">
-                <input
-                    type="email"
-                    placeholder="Email*"
-                    >
-            </div>
-            <div class="form-text">
-                <textarea
-                    cols="30" 
-                    rows="5"
-                    type="text"
-                    placeholder="Your Message*"></textarea> 
-            </div>
-            <a class="btn-theme btn" href="">Send Message <i class="fa-solid fa-arrow-up-right"></i></a>
-        </form>
+                    placeholder="Name*">
+
+                    <input asp-for="@contactForm.Email"
+                       type="email"
+                       placeholder="Email*">
+
+                    <textarea asp-for="@contactForm.Message"
+                          cols="30"
+                          rows="5"
+                          type="text"
+                          placeholder="Your Message*">
+                    </textarea>
+
+                </div>
+                <button type="submit" class="btn-theme btn">Send Message <i class="fa-solid fa-arrow-up-right"></i></button>   
+        }
     </div>
 </section>

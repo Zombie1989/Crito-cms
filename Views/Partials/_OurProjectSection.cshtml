@@ -1,45 +1,56 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage;
+@using Umbraco.Cms.Core.Models.PublishedContent;
 
+
+@{
+    var itemsPerPage = 4;
+    var pageNumber = 1;
+
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber))
+        pageNumber = 1;
+
+	var selection = Umbraco.Content(Guid.Parse("76f47eb5-27de-4852-82f6-8de820915c62"))
+    .ChildrenOfType("projectItemPage")
+    .Where(x => x.IsVisible())
+    .OrderByDescending(x => x.CreateDate);
+
+    var totalItems = selection?.Count() ?? 0;
+    var pagedItems = selection?.Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage);
+}
 
 <section class="projects-section">
     <div class="container">
         <div class="project-text">
-            <p class="red-text">Project & Case Studies</p>
-            <h1 class="project-title">Let’s Looks Our Global Projects</h1>
+            <p class="red-text">@Model.Value("projectTitle")</p>
+            <h1 class="project-title">@Model.Value("projectHeading")</h1>
         </div>
         <div class="project-grid">
-            <div class="grid-box">
-                <img src="/Images/Pictures/adeolu-eletu-E7RLgUjjazc-unsplash.jpg" alt="">
-                <h3 class="project-text">Grow your business</h3>
-                <div class="line"></div>
-                <div class="read-more">
-                    <a href="#">Read More <i class="fa-regular fa-arrow-up-right"></i></a>
-                </div>                    </div>
-            <div class="grid-box">
-                <img src="/images/Pictures/marek-levak-zANXcXyByos-unsplash.jpg" alt="">
-                <h3 class="project-text">Why your client needs a responsive website</h3>
-                <div class="line"></div>
-                <div class="read-more">
-                    <a href="#">Read More <i class="fa-regular fa-arrow-up-right"></i></a>
-                </div>                    </div>
-            <div class="grid-box">
-                <img src="/images/Pictures/oli-dale-xjSkI_seiZY-unsplash.jpg" alt="">
-                <h3 class="project-text">Educate your employees to get better results</h3>
-                <div class="line"></div>
-                <div class="read-more">
-                    <a href="#">Read More <i class="fa-regular fa-arrow-up-right"></i></a>
-                </div>                    </div>
-            <div class="grid-box">
-                <img src="/images/Pictures/carlos-muza-hpjSkU2UYSU-unsplash.jpg" alt="">
-                <h3 class="project-text">Business Insights is a important piece of your business</h3>
-                <div class="line"></div>
-                <div class="read-more">
-                    <a href="#">Read More <i class="fa-regular fa-arrow-up-right"></i></a>
+            
+                
+            @if (pagedItems != null)
+            {
+                @foreach (var item in pagedItems!)
+                {
+                    var url = item.Url();
+                    var image = item.Value<IPublishedContent>("projectImage");
+                    var title = item.Name();
+                    var description = item.Value("newsPreamble");
+
+                <div class="grid-box">
+                    <img src="@image.Url()" alt="">
+                    <h3 class="project-text">Business Insights is a important piece of your business</h3>
+                    <div class="line"></div>
+                    <div class="read-more">
+                        <a href="@url">Read More <i class="fa-regular fa-arrow-up-right"></i></a>
+                    </div> 
                 </div>
-            </div>
+                }
+            }
+           
+            
         </div>
         <div class="project-button">
-            <a class="btn-dark" href="#">All Recent Projects <i class="fa-regular fa-arrow-up-right"></i></a>
+            <a class="btn-dark" href="@Model.Value("serviceFeaturesButtonUrl")">@Model.Value("projectButtonText") <i class="fa-regular fa-arrow-up-right"></i></a>
         </div>
     </div>
 </section>

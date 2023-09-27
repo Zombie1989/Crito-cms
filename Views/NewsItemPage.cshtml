@@ -1,6 +1,81 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.NewsItemPage>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@inject IUserService UserService;
 @{
-	Layout = "LayoutWithBreadcrumb.cshtml";
+    Layout = "LayoutWithBreadcrumb.cshtml";
+    var userService = UserService;
+    var image = Model.Value<IPublishedContent>("newsImage");
 }
+
+<section class="news-article-section">
+    <div class="container">
+        <div class="left">
+            <h1>@Model.Name</h1>
+            <div class="article-information">
+                <span>@Model.CreateDate.ToString("MMM dd, yyyy")</span>
+                <i class="fa-solid fa-circle"></i>
+                <span>@Model.Value("newsCategory")</span>
+                <i class="fa-solid fa-circle"></i>
+                <span>@Model.CreatorName(UserService)</span>
+            </div>
+            <img src="@image.Url()" alt="">
+            <p class="main-text">@Model.Value("newsContent")</p>
+            <div class="article-tags">
+                @foreach(var tag in Model.Value<IEnumerable<string>>("newsTags")) 
+                {
+                    <span>@tag</span>
+                }
+                
+            </div>
+        </div>
+        <div class="right">
+            <form class="search-form" action="">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input 
+                    type="text"
+                    placeholder=" Type to search...">
+            </form>
+            <div>
+                <h2>Recent Posts</h2>
+                <div>
+                    <h5></h5>
+                    <p></p>
+                </div>
+                <div>
+                    <h5></h5>
+                    <p></p>
+                </div>
+                <div>
+                    <h5></h5>
+                    <p></p>
+                </div>
+                <div>
+                    <h5></h5>
+                    <p></p>
+                </div>
+            </div>
+            <div>
+                <h2>Categories</h2>
+                <p>Techonology - <span>20 Posts</span></p>
+                <p>Freelancing - <span>07 Posts</span></p>
+                <p>Writing - <span>16 Posts</span></p>
+                <p>Marketing - <span>11 Posts</span></p>
+                <p>Business - <span>35 Posts</span></p>
+                <p>Education - <span>14 Posts</span></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="custom-background">
+    @await Html.PartialAsync("_ArticleSection")
+</div>
+
+<style>
+        .custom-background {
+        background-color: #F0EFE9; 
+    }
+</style>

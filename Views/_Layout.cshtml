@@ -43,5 +43,30 @@
     
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var paginationDots = document.getElementById("pagination-dots");
+    
+            paginationDots.addEventListener("click", function(event) {
+                // Check if the clicked element is a dot anchor
+                if (event.target.tagName === "A" && event.target.classList.contains("dot")) {
+                    // Prevent the default behavior (scrolling to the top)
+                    event.preventDefault();
+    
+                    // Get the page number from the clicked dot's href attribute
+                    var pageLink = event.target.getAttribute("href");
+                    var pageNumber = parseInt(pageLink.split("=")[1]); // Extract the page number
+    
+                    // Handle the pagination logic here
+                    // You can use JavaScript to load the new content without a page refresh
+                    // For example, you can make an AJAX request to load the new page of news items
+                    // and update the content dynamically based on the pageNumber.
+                    // Replace the following line with your pagination logic.
+                    console.log("Clicked on page " + pageNumber);
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>

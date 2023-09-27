@@ -8,8 +8,8 @@
             </div>
             <div class="right">
                 <h1>Visit us</h1>
-                <p>Sveavägen 31</p>
-                <p>111 34 STOCKHOLM</p>
+                <p>@Model.Value("visitUsStreetName")</p>
+                <p>@Model.Value("visitUsPostalCode") @Model.Value("visitUsCityName")</p>
             </div>
         </div>
         <div class="box-information">
@@ -18,8 +18,8 @@
             </div>
             <div class="right">
                 <h1>Call us</h1>
-                <p>+46 (8) 121 470 50</p>
-                <p>+46 (8) 121 470 51</p>
+                <p>@Model.Value("callUsPhoneNumber1")</p>
+                <p>@Model.Value("callUsPhoneNumber2")</p>
             </div>
         </div>
         <div class="box-information">
@@ -28,8 +28,8 @@
             </div>
             <div class="right">
                 <h1>Email us</h1>
-                <p>info@crito.com</p>
-                <p>support@crito.com</p>
+                <p>@Model.Value("emailUsEmail1")</p>
+                <p>@Model.Value("emailUsEmail2")</p>
             </div>
         </div>
     </div>

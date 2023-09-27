@@ -1,4 +1,23 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.PublishedContent;
+
+
+@{
+    var itemsPerPage = 4;
+    var pageNumber = 1;
+
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber))
+        pageNumber = 1;
+
+	var selection = Umbraco.Content(Guid.Parse("76f47eb5-27de-4852-82f6-8de820915c62"))
+        .ChildrenOfType("teamItemPage")
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.UpdateDate);
+        
+    var totalItems = selection?.Count() ?? 0;
+    var pagedItems = selection?.Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage);
+
+}
 
 
 <section class="team-section">
@@ -7,30 +26,27 @@
             <p class="red-text">Meet Our Team</p>
             <div class="btn-flex">
                 <h1 class="team-title">Experience Team Members</h1>
-                <a class="btn-theme" href="#">Browse Team <i class="fa-regular fa-arrow-up-right"></i></a>
+                <a class="btn-theme" href="/Services/Team">Browse Team <i class="fa-regular fa-arrow-up-right"></i></a>
             </div>
         </div>
         <div class="team-carusel">
-            <div class="team-box">
-                <img src="/images/pictures/christina-wocintechchat-com-SJvDxw0azqw-unsplash.jpg" alt="">
-                <h3 class="team-name">Kristine Palmer</h3>
-                <p class="team-position">Chef Operation Officer</p>
-            </div>
-            <div class="team-box">
-                <img src="/images/Pictures/itay-verchik-6ZKGBzrDd3I-unsplash.jpg" alt="">
-                <h3 class="team-name">Mark Aubri</h3>
-                <p class="team-position">Senior Consultant</p>
-            </div>
-            <div class="team-box">
-                <img src="/images/pictures/christina-wocintechchat-com-Zpzf7TLj_gA-unsplash.jpg" alt="">
-                <h3 class="team-name">Kimberly Hansen</h3>
-                <p class="team-position">Senior Consultant</p>
-            </div>
-            <div class="team-box">
-                <img src="/images/pictures/the-connected-narrative-N8lRH2uxih4-unsplash.jpg" alt="">
-                <h3 class="team-name">Justin Willoman</h3>
-                <p class="team-position">Senior Tech Consultant</p>
-            </div>
+
+            @if (pagedItems != null)
+            {
+                @foreach (var item in pagedItems!)
+                {
+                    var image = item.Value<IPublishedContent>("teamImage");
+                    var name = item.Value("teamName");
+                    var position = item.Value("teamPosition");
+
+                    <div class="team-box">
+                        <img src="@image.Url()" alt="">
+                        <h3 class="team-name">@name</h3>
+                        <p class="team-position">@position</p>
+                    </div>
+                }
+            }
+
         </div>
         <div class="carousel-dots">
             <span class="dot"><i class="fa-duotone fa-circle"></i></span>

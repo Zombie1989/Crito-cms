@@ -1,4 +1,24 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.PublishedContent;
+
+
+@{
+    var itemsPerPage = 3;
+    var pageNumber = 1;
+
+    if (!int.TryParse(Context.Request.Query["page"], out pageNumber))
+        pageNumber = 1;
+
+    var selection = Umbraco?.Content(Guid.Parse("a066a701-8109-4f6a-9c80-f301ac56bd1c"))?
+        .ChildrenOfType("newsItemPage")?
+        .Where(x => x.IsVisible())
+        .OrderByDescending(x => x.CreateDate).ToList();
+
+
+    var totalItems = selection?.Count() ?? 0;
+    var pagedItems = selection?.Skip((pageNumber - 1) * itemsPerPage).Take(itemsPerPage);
+
+}
 
 
 <section class="article-section">
@@ -7,47 +27,53 @@
             <p class="red-text">Article & News</p>
             <div class="btn-flex">
                 <h1 class="team-title">Get Every Single Articles & News</h1>
-                <a class="btn-transparent" href="#">Browse Articles <i class="fa-regular fa-arrow-up-right"></i></a>
+                <a class="btn-transparent" href="/news">Browse Articles <i class="fa-regular fa-arrow-up-right"></i></a>
             </div>
         </div>
         <div class="article-carusel">
-            <a href="#" class="article-box">
-                <img src="/images/pictures/linkedin-sales-solutions-Mis5fyJi7Q0-unsplash.jpg" alt="">
-                <p class="article-name">Business</p>
-                <h3 class="article-title">How To Use Digitalization In The Classroom</h3>
-                <p class="article-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto sed hic libero.</p>
-                <div class="date-month">
-                    <h5 class="date">25</h5>
-                    <p class="month">Mar</p>
-                </div>
-            </a>
-            <a href="#" class="article-box">
-                <img src="/images/pictures/emiliano-vittoriosi-vEN1bsdSjxM-unsplash.jpg" alt="">
-                <p class="article-name">Business</p>
-                <h3 class="article-title">How To Implement Chat GPT In Your Projects</h3>
-                <p class="article-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto sed hic libero.</p>
-                <div class="date-month">
-                    <h5 class="date">17</h5>
-                    <p class="month">Mar</p>
-                </div>
-            </a>
-            <a href="#" class="article-box">
-                <img src="/images/pictures/kobu-agency-ipARHaxETRk-unsplash.jpg" alt="">
-                <p class="article-name">Business</p>
-                <h3 class="article-title">The Guide To Support Modern CSS Design</h3>
-                <p class="article-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto sed hic libero.</p>
-                <div class="date-month">
-                    <h5 class="date">13</h5>
-                    <p class="month">Mar</p>
-                </div>
-            </a>
+
+            @if (pagedItems != null)
+            {
+                @foreach (var item in pagedItems!)
+                {
+                    var url = item.Url();
+                    var date = item.CreateDate;
+                    var image = item.Value<IPublishedContent>("newsImage");
+                    var categories = item.Value("newsCategory");
+                    var title = item.Name();
+                    var description = item.Value("newsPreamble");
+
+
+                    <a href="@url" class="article-box">
+                        <img src="@image?.Url()" alt="">
+                        <p class="article-name">@categories</p>
+                        <h3 class="article-title">@title</h3>
+                        <p class="article-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto sed hic libero.</p>
+                        <div class="date-month">
+                            <h5 class="date">@date.ToString("dd")</h5>
+                            <p class="month">@date.ToString("MMM")</p>
+                        </div>
+                    </a>
+                }
+            }
+
         </div>
-        <div class="carousel-dots">
-            <span class="dot"><i class="fa-duotone fa-circle"></i></span>
-            <span class="dot"><i class="fa-duotone fa-circle"></i></span>
-            <span class="dot"><i class="fa-solid fa-circle"></i></span>
-            <span class="dot"><i class="fa-duotone fa-circle"></i></span>
-            <span class="dot"><i class="fa-duotone fa-circle"></i></span>
+        <div class="carousel-dots" id="pagination-dots">
+            
+            @for (int i = 1; i <= Math.Ceiling((decimal)totalItems / itemsPerPage); i++ )
+            {
+                if (i == pageNumber)
+                {
+                    <a href="#" class="dot active"><i class="fa-duotone fa-circle">@i</i></a>
+                }
+                else
+                {
+                    <a href="?page=@i" class="dot"><i class="fa-duotone fa-circle">@i</i></a>
+                }
+            }
+            
         </div>
     </div>
 </section>
+
+

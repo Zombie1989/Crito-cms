@@ -596,6 +596,7 @@ body {
 
 .article-section {
   margin-top: 100px;
+  padding-top: 30px;
 }
 .article-section .pagnation {
   display: flex;
@@ -790,6 +791,7 @@ body {
 }
 .form-section form .form-text input {
   width: 100%;
+  margin-bottom: 20px;
   padding: 20px 50px;
   border-radius: 40px;
   border: none;
@@ -800,11 +802,11 @@ body {
   border-radius: 40px;
   border: none;
 }
-.form-section form a {
+.form-section form button {
   width: 100%;
   margin: 30px 0 100px 0;
 }
-.form-section form a .btn {
+.form-section form button .btn {
   text-align: center;
 }
 
@@ -832,13 +834,15 @@ body {
   display: flex;
   margin: 50px 0 80px 0;
 }
-.news-article-section .left .article-information p {
+.news-article-section .left .article-information span {
   margin-right: 30px;
   font-family: "DM Sans", sans-serif;
   font-size: 1.25rem;
   font-weight: 500;
 }
 .news-article-section .left .article-information i {
+  display: flex;
+  align-items: center;
   margin-right: 30px;
   color: #F0D082;
 }
@@ -848,31 +852,17 @@ body {
 .news-article-section .left .main-text {
   margin-top: 50px;
 }
-.news-article-section .left .quote {
-  margin: 100px 0;
-  font-size: 1.375rem;
-  font-family: "DM Sans", sans-serif;
-  font-style: italic;
-  font-weight: 500;
-}
 .news-article-section .left .article-tags {
   display: flex;
   text-align: center;
   margin: 40px 0 60px 0;
 }
-.news-article-section .left .article-tags div {
+.news-article-section .left .article-tags span {
   background-color: #F3F3F3;
   padding: 15px;
   border-radius: 30px;
   width: 20%;
   margin-right: 8px;
-}
-.news-article-section .left .article-tags div:hover {
-  text-decoration: underline;
-}
-.news-article-section .left .article-tags div a {
-  text-decoration: none;
-  color: #191919;
 }
 .news-article-section .right {
   flex: 1;
