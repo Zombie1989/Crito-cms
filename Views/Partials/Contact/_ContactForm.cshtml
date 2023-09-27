@@ -4,6 +4,7 @@
     var contactForm = new ContactForm();
 }
 
+
 <section class="form-section">
     <div class="container">
         <div class="form-title">
@@ -12,25 +13,18 @@
 
         @using (Html.BeginUmbracoForm("Index", "Contacts", FormMethod.Post))
         {
-             <div asp-validation-summary="All"></div>
+             <div asp-validation-summary="ModelOnly"></div>
 
                 <div class="form-text">
 
-                    <input
-                    asp-for="@contactForm.Name"
-                    type="text"
-                    placeholder="Name*">
+                    <input asp-for="@contactForm.Name" type="text" placeholder="Name*">
+                    <span asp-validation-for="@contactForm.Name" class="text-danger"></span>
 
-                    <input asp-for="@contactForm.Email"
-                       type="email"
-                       placeholder="Email*">
+                    <input asp-for="@contactForm.Email" type="email" placeholder="Email*">
+                    <span asp-validation-for="@contactForm.Email"class="text-danger"></span>
 
-                    <textarea asp-for="@contactForm.Message"
-                          cols="30"
-                          rows="5"
-                          type="text"
-                          placeholder="Your Message*">
-                    </textarea>
+                    <textarea asp-for="@contactForm.Message" cols="30" rows="5" type="text" placeholder="Your Message*"></textarea>
+                    <span asp-validation-for="@contactForm.Message" class="text-danger"></span>
 
                 </div>
                 <button type="submit" class="btn-theme btn">Send Message <i class="fa-solid fa-arrow-up-right"></i></button>   
