@@ -1,18 +1,24 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@using Crito.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var signupForm = new SignupForm();
+}
 
 
 <section class="signup-section">
     <div class="container">
         <h1 class="title">Get News Updates By Signup </h1>
         <div class="form-section">
-            <form action="">
-                <input
-                    class="text-form" 
-                    type="text" 
-                    id="subscribe" 
-                    placeholder="username@domain.com" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <form method="post">
+                <input asp-for="@signupForm.Email" type="email" class="text-form" id="subscribe" placeholder="username@domain.com" required />
+                <span asp-validation-for="@signupForm.Email" class="text-danger"></span>
+                <button type="submit" class="btn-theme">Subscribe <i class="fa-regular fa-arrow-up-right"></i></button>
+
             </form>
-            <a class="btn-theme" href="">Subscribe <i class="fa-regular fa-arrow-up-right"></i></a>
             <img class="image" src="/src/images/background/background-wavy-lines.svg" alt="">
         </div>
     </div>

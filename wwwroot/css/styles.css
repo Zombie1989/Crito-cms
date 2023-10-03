@@ -703,10 +703,6 @@ body {
 .signup-section {
   background-color: #F0EFE9;
   height: 270px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
 }
 .signup-section .container {
   display: flex;
@@ -719,16 +715,21 @@ body {
   font-weight: 700;
 }
 .signup-section .form-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    text-align: center;
 }
+
+.signup-section .form-section button {
+    border: none;
+    width: 35%;
+}
+
 .signup-section .form-section .text-form {
   border: none;
   border-radius: 30px;
   padding: 15px 50px;
-  width: 300px;
+  width: 60%;
   margin-right: 20px;
+  margin-top: 100px;
 }
 .signup-section .image {
   position: absolute;
